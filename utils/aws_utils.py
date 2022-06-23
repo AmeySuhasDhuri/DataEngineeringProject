@@ -52,7 +52,7 @@ def sftp_OL(spark, current_dir, app_secret, file_path):
         .option("pem", os.path.abspath(current_dir + "/../" + app_secret["sftp_conf"]["pem"])) \
         .option("fileType", "csv") \
         .option("delimiter", "|") \
-        .load(file_path) \
+        .load() \
         .withColumn('insert_date', current_date())
 
     return ol_txn_df
