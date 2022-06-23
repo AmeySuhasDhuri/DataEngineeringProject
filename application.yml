@@ -22,7 +22,7 @@ CD:
     collection: students
 
 CP:
-  filename: /KC_Extract_1_20171009.csv
+  filename: KC_Extract_1_20171009.csv
 
 s3_conf:
   s3_bucket: spark-s3-bucket-01
