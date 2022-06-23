@@ -79,13 +79,13 @@ def mongodb_CD(spark, dbName, collName):
 
 #    return campaigns_df
 
-def s3_bucket_CP(spark, s3_path):
+def s3_bucket_CP(spark, path):
     campaigns_df = spark \
         .read \
         .option("header", "true") \
         .option("fileType", "csv") \
         .option("delimiter", "|") \
-        .load(s3_path) \
+        .load(path) \
         .withColumn('insert_date', current_date())
 
     return campaigns_df
