@@ -21,13 +21,13 @@ def get_mysql_jdbc_url(mysql_config: dict):
     return "jdbc:mysql://{}:{}/{}?autoReconnect=true&useSSL=false".format(host, port, database)
 
 #MYSQL Source
-def mysql_TD(spark, app_secret, src_config):
+def mysql_TD(spark, app_secret, table_name, partition_col):
     jdbc_params = {"url": ut.get_mysql_jdbc_url(app_secret),
                    "lowerBound": "1",
                    "upperBound": "100",
-                   "dbtable": src_config["mysql_conf"]["query"],
+                   "dbtable": table_name,
                    "numPartitions": "2",
-                   "partitionColumn": src_config["mysql_conf"]["partition_column"],
+                   "partitionColumn": partition_col,
                    "user": app_secret["mysql_conf"]["username"],
                    "password": app_secret["mysql_conf"]["password"]
                    }
@@ -44,16 +44,16 @@ def mysql_TD(spark, app_secret, src_config):
     return txnDF
 
 #SFTP Source
-def sftp_OL(spark, current_dir, app_secret, src_config):
+def sftp_OL(spark, current_dir, app_secret, pem_path, file_path):
     ol_txn_df = spark.read \
         .format("com.springml.spark.sftp") \
         .option("host", app_secret["sftp_conf"]["hostname"]) \
         .option("port", app_secret["sftp_conf"]["port"]) \
         .option("username", app_secret["sftp_conf"]["username"]) \
-        .option("pem", os.path.abspath(current_dir + "/../" + app_secret["sftp_conf"]["pem"])) \
+        .option("pem", pem_path) \
         .option("fileType", "csv") \
         .option("delimiter", "|") \
-        .load(src_config["sftp_conf"]["directory"] + "/receipts_delta_GBR_14_10_2017.csv") \
+        .load(file_path) \
         .withColumn('insert_date', current_date())
 
     return ol_txn_df
@@ -71,10 +71,21 @@ def mongodb_CD(spark, dbName, collName):
     return customer_df
 
 #S3 Source
-def s3_bucket_CP(spark):
+#def s3_bucket_CP(spark):
+#    campaigns_df = spark \
+#        .read \
+#        .csv('s3://spark-s3-bucket-01/KC_Extract_1_20171009.csv') \
+#        .withColumn('insert_date', current_date())
+
+#    return campaigns_df
+
+def s3_bucket_CP(spark, s3_path):
     campaigns_df = spark \
         .read \
-        .csv('s3://spark-s3-bucket-01/KC_Extract_1_20171009.csv') \
+        .option("header", "true") \
+        .option("fileType", "csv") \
+        .option("delimiter", "|") \
+        .load(s3_path) \
         .withColumn('insert_date', current_date())
 
     return campaigns_df

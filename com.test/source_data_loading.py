@@ -37,28 +37,35 @@ if __name__ == '__main__':
         if src == 'TD':
             # use the ** operator/un-packer to treat a python dictionary as **kwargs
             print("\nReading data from MySQL DB using SparkSession.read.format(),")
-            mysql_TD_df = ut.mysql_TD(spark, app_secret, src_config)
-            mysql_TD_df.show()
+            mysql_TD_df = ut.mysql_TD(spark, app_secret,
+                                      src_config["mysql_conf"]["query"],
+                                      src_config["mysql_conf"]["partition_column"])
+            mysql_TD_df.show(5, False)
             mysql_TD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # SFTP Source
         elif src == 'OL':
             print("\nReading data from SFTP using SparkSession.read.format(),")
-            sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret, src_config)
+            sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret,
+                                    os.path.abspath(current_dir + "/../" + app_secret["sftp_conf"]["pem"]),
+                                    src_config["sftp_conf"]["directory"] + "/receipts_delta_GBR_14_10_2017.csv")
             sftp_OL_df.show(5, False)
             sftp_OL_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # MONGODB Source
         elif src == 'CD':
             print("\nReading data from MONGODB using SparkSession.read.format(),")
-            mongodb_CD_df = ut.mongodb_CD(spark, src_config["mongodb_config"]["database"], src_config["mongodb_config"]["collection"])
+            mongodb_CD_df = ut.mongodb_CD(spark,
+                                          src_config["mongodb_config"]["database"],
+                                          src_config["mongodb_config"]["collection"])
             mongodb_CD_df.show()
             mongodb_CD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # S3 Source
         elif src == 'CP':
             print("\nReading data from S3 Bucket using SparkSession.read.format(),")
-            s3_bucket_CP_df = ut.s3_bucket_CP(spark)
+            s3_bucket_CP_df = ut.s3_bucket_CP(spark,
+                                              's3a://' + src_config['s3_conf']['s3_bucket'] + src_config['filename'])
             s3_bucket_CP_df.show(5, False)
             s3_bucket_CP_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
