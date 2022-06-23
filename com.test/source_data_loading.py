@@ -43,14 +43,14 @@ if __name__ == '__main__':
         # SFTP Source
         elif src == 'OL':
             print("\nReading data from SFTP using SparkSession.read.format(),")
-            sftp_OL_df = ut.sftp_OL(spark, app_secret, src_conf["sftp_conf"]["directory"] + "/receipts_delta_GBR_14_10_2017.csv")
+            sftp_OL_df = ut.sftp_OL(spark, app_secret, src_config["sftp_conf"]["directory"] + "/receipts_delta_GBR_14_10_2017.csv")
             sftp_OL_df.show(5, False)
             sftp_OL_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # MONGODB Source
         elif src == 'CD':
             print("\nReading data from MONGODB using SparkSession.read.format(),")
-            mongodb_CD_df = ut.mongodb_CD(spark, src_conf["mongodb_config"]["database"], src_conf["mongodb_config"]["collection"])
+            mongodb_CD_df = ut.mongodb_CD(spark, src_config["mongodb_config"]["database"], src_config["mongodb_config"]["collection"])
             mongodb_CD_df.show()
             mongodb_CD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
