@@ -65,7 +65,7 @@ if __name__ == '__main__':
         elif src == 'CP':
             print("\nReading data from S3 Bucket using SparkSession.read.format(),")
             s3_bucket_CP_df = ut.s3_bucket_CP(spark,
-                                              's3a://' + app_config['s3_conf']['s3_bucket'] + src_config['filename'])
+                                              's3a://' + app_conf['s3_conf']['s3_bucket'] + src_config['filename'])
             s3_bucket_CP_df.show(5, False)
             s3_bucket_CP_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
