@@ -39,7 +39,6 @@ if __name__ == '__main__':
             print("\nReading data from MySQL DB using SparkSession.read.format(),")
             mysql_TD_df = ut.mysql_TD(spark, app_secret, src_config)
             mysql_TD_df.show()
-            print("\nWriting data from MySQL DB to S3 bucket")
             mysql_TD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # SFTP Source
@@ -47,7 +46,6 @@ if __name__ == '__main__':
             print("\nReading data from SFTP using SparkSession.read.format(),")
             sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret, src_config)
             sftp_OL_df.show(5, False)
-            print("\nWriting data from SFTP server to S3 bucket")
             sftp_OL_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # MONGODB Source
@@ -55,7 +53,6 @@ if __name__ == '__main__':
             print("\nReading data from MONGODB using SparkSession.read.format(),")
             mongodb_CD_df = ut.mongodb_CD(spark, src_config["mongodb_config"]["database"], src_config["mongodb_config"]["collection"])
             mongodb_CD_df.show()
-            print("\nWriting data from Mongo DB to S3 bucket")
             mongodb_CD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # S3 Source
@@ -63,7 +60,9 @@ if __name__ == '__main__':
             print("\nReading data from S3 Bucket using SparkSession.read.format(),")
             s3_bucket_CP_df = ut.s3_bucket_CP(spark)
             s3_bucket_CP_df.show(5, False)
-            print("\nWriting data from S3 bucket to S3 bucket")
             s3_bucket_CP_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
     #spark-submit --packages mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 com.test/source_data_loading.py
+
+    #zip -r ../DataEngineeringProject.zip .
+    #spark-submit --packages mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --py-files ../DataEngineeringProject.zip com.test/source_data_loading.py
