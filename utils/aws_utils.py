@@ -83,7 +83,6 @@ def s3_bucket_CP(spark, path):
     campaigns_df = spark \
         .read \
         .option("header", "true") \
-        .option("fileType", "csv") \
         .option("delimiter", "|") \
         .load(path) \
         .withColumn('insert_date', current_date())
