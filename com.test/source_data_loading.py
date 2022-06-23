@@ -10,6 +10,14 @@ if __name__ == '__main__':
         '--packages "mysql:mysql-connector-java:8.0.15" pyspark-shell'
     )
 
+    # Create the SparkSession
+    spark = SparkSession \
+        .builder \
+        .appName("Read com.test enterprise applications") \
+        .master('local[*]') \
+        .getOrCreate()
+    spark.sparkContext.setLogLevel('ERROR')
+
     current_dir = os.path.abspath(os.path.dirname(__file__))
     app_config_path = os.path.abspath(current_dir + "/../" + "application.yml")
     app_secrets_path = os.path.abspath(current_dir + "/../" + ".secrets")
@@ -18,15 +26,6 @@ if __name__ == '__main__':
     app_conf = yaml.load(conf, Loader=yaml.FullLoader)
     secret = open(app_secrets_path)
     app_secret = yaml.load(secret, Loader=yaml.FullLoader)
-
-    # Create the SparkSession
-    spark = SparkSession \
-        .builder \
-        .appName("Read com.test enterprise applications") \
-        .master('local[*]') \
-        .config('spark.jars.packages', 'com.springml:spark-sftp_2.11:1.1.1') \
-        .getOrCreate()
-    spark.sparkContext.setLogLevel('ERROR')
 
     src_list = app_conf['source_list']
     for src in src_list:
