@@ -11,13 +11,7 @@ if __name__ == '__main__':
     )
 
     # Create the SparkSession
-    spark = SparkSession \
-        .builder \
-        .appName("Read com.test enterprise applications") \
-        .master('local[*]') \
-        .config('spark.jars.packages', 'com.springml:spark-sftp_2.11:1.1.1') \
-        .getOrCreate()
-    spark.sparkContext.setLogLevel('ERROR')
+
 
     current_dir = os.path.abspath(os.path.dirname(__file__))
     app_config_path = os.path.abspath(current_dir + "/../" + "application.yml")
@@ -27,6 +21,14 @@ if __name__ == '__main__':
     app_conf = yaml.load(conf, Loader=yaml.FullLoader)
     secret = open(app_secrets_path)
     app_secret = yaml.load(secret, Loader=yaml.FullLoader)
+
+    spark = SparkSession \
+        .builder \
+        .appName("Read com.test enterprise applications") \
+        .master('local[*]') \
+        .config("spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"]) \
+        .getOrCreate()
+    spark.sparkContext.setLogLevel('ERROR')
 
     src_list = app_conf['source_list']
     for src in src_list:
