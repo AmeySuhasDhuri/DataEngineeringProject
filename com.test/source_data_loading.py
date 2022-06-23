@@ -30,7 +30,7 @@ if __name__ == '__main__':
     src_list = app_conf['source_list']
     for src in src_list:
         src_config = app_conf[src]
-        stg_path = 's3a://' + app_conf['s3_conf']['staging_location'] + src
+        stg_path = 's3a://' + app_conf['s3_conf']['s3_bucket'] + '/' + app_conf['s3_conf']['staging_location'] + '/' + src
 
         # MYSQL Source
         if src == 'TD':
