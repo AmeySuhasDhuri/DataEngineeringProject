@@ -43,7 +43,7 @@ if __name__ == '__main__':
         # SFTP Source
         elif src == 'OL':
             print("\nReading data from SFTP using SparkSession.read.format(),")
-            sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret, src_config["sftp_conf"]["directory"] + "/receipts_delta_GBR_14_10_2017.csv")
+            sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret)
             sftp_OL_df.show(5, False)
             sftp_OL_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 

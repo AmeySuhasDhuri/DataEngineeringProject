@@ -43,7 +43,7 @@ def mysql_TD(spark, app_secret, src_config):
     return txnDF
 
 #SFTP Source
-def sftp_OL(spark, current_dir, app_secret, file_path):
+def sftp_OL(spark, current_dir, app_secret):
     ol_txn_df = spark.read \
         .format("com.springml.spark.sftp") \
         .option("host", app_secret["sftp_conf"]["hostname"]) \
@@ -52,7 +52,7 @@ def sftp_OL(spark, current_dir, app_secret, file_path):
         .option("pem", os.path.abspath(current_dir + "/../" + app_secret["sftp_conf"]["pem"])) \
         .option("fileType", "csv") \
         .option("delimiter", "|") \
-        .load() \
+        .load(src_config["sftp_conf"]["directory"] + "/receipts_delta_GBR_14_10_2017.csv") \
         .withColumn('insert_date', current_date())
 
     return ol_txn_df
