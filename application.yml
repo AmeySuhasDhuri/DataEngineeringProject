@@ -20,6 +20,7 @@ CD:
   mongodb_config:
     database: school
     collection: students
+CP:
 
 s3_conf:
   s3_bucket: spark-s3-bucket-01
