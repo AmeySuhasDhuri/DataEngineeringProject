@@ -24,7 +24,7 @@ if __name__ == '__main__':
         .builder \
         .appName("Read com.test enterprise applications") \
         .master('local[*]') \
-        .config('spark.jars.packages', 'com.springml:spark-sftp_2.11:1.1.1', "spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"]) \
+        .config('spark.jars.packages', 'com.springml:spark-sftp_2.11:1.1.1') \
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
