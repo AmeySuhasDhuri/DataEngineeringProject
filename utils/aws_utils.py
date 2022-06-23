@@ -58,14 +58,14 @@ def sftp_OL(spark, current_dir, app_secret, src_config):
     return ol_txn_df
 
 #MONGODB Source
-def mongodb_CD(spark, src_config):
+def mongodb_CD(spark, dbName, collName):
     customer_df = spark \
         .read \
         .format("com.mongodb.spark.sql.DefaultSource") \
-        .option("database", src_config["mongodb_config"]["database"]) \
-        .option("collection", src_config["mongodb_config"]["collection"]) \
-        .load() \
-        .withColumn('insert_date', current_date())
+        .option("database", dbName) \
+        .option("collection", collName) \
+        .load()
+        #.withColumn('insert_date', current_date())
 
     return customer_df
 
