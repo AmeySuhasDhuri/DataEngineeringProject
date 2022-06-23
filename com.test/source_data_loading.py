@@ -55,7 +55,7 @@ if __name__ == '__main__':
             print("\nReading data from MONGODB using SparkSession.read.format(),")
             mongodb_CD_df = ut.mongodb_CD(spark, src_config["mongodb_config"]["database"], src_config["mongodb_config"]["collection"])
             mongodb_CD_df.show()
-            #mongodb_CD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
+            mongodb_CD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # S3 Source
         elif src == 'CP':
