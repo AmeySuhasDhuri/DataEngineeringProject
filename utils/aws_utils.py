@@ -64,8 +64,8 @@ def mongodb_CD(spark, dbName, collName):
         .format("com.mongodb.spark.sql.DefaultSource") \
         .option("database", dbName) \
         .option("collection", collName) \
-        .load()
-        #.withColumn('insert_date', current_date())
+        .load() \
+        .withColumn('insert_date', current_date())
 
     return customer_df
 
