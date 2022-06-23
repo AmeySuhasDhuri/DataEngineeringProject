@@ -33,12 +33,12 @@ if __name__ == '__main__':
         stg_path = 's3a://' + app_conf['s3_conf']['s3_bucket'] + '/' + app_conf['s3_conf']['staging_location'] + '/' + src
 
         # MYSQL Source
-        if src == 'TD':
+        #if src == 'TD':
             # use the ** operator/un-packer to treat a python dictionary as **kwargs
-            print("\nReading data from MySQL DB using SparkSession.read.format(),")
-            mysql_TD_df = ut.mysql_TD(spark, app_secret, src_config)
-            mysql_TD_df.show()
-            mysql_TD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
+        #    print("\nReading data from MySQL DB using SparkSession.read.format(),")
+        #    mysql_TD_df = ut.mysql_TD(spark, app_secret, src_config)
+        #    mysql_TD_df.show()
+        #    mysql_TD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # SFTP Source
         elif src == 'OL':
