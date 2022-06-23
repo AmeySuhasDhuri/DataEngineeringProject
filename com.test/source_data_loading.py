@@ -66,3 +66,4 @@ if __name__ == '__main__':
             print("\nWriting data from S3 bucket to S3 bucket")
             s3_bucket_CP_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
+    #spark-submit --packages mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 com.test/source_data_loading.py
