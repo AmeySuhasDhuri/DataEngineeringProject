@@ -26,6 +26,7 @@ if __name__ == '__main__':
         .builder \
         .appName("Read com.test enterprise applications") \
         .master('local[*]') \
+        .config('spark.jars.packages', 'com.springml:spark-sftp_2.11:1.1.1') \
         .config("spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"]) \
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
@@ -36,22 +37,22 @@ if __name__ == '__main__':
         stg_path = 's3a://' + app_conf['s3_conf']['s3_bucket'] + '/' + app_conf['s3_conf']['staging_location'] + '/' + src
 
         # MYSQL Source
-        #if src == 'TD':
-        #    # use the ** operator/un-packer to treat a python dictionary as **kwargs
-        #    print("\nReading data from MySQL DB using SparkSession.read.format(),")
-        #    mysql_TD_df = ut.mysql_TD(spark, app_secret, src_config)
-        #    mysql_TD_df.show()
-        #    mysql_TD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
+        if src == 'TD':
+            # use the ** operator/un-packer to treat a python dictionary as **kwargs
+            print("\nReading data from MySQL DB using SparkSession.read.format(),")
+            mysql_TD_df = ut.mysql_TD(spark, app_secret, src_config)
+            mysql_TD_df.show()
+            mysql_TD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # SFTP Source
-        #elif src == 'OL':
-        #    print("\nReading data from SFTP using SparkSession.read.format(),")
-        #    sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret, src_config)
-        #    sftp_OL_df.show(5, False)
-        #    sftp_OL_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
+        elif src == 'OL':
+            print("\nReading data from SFTP using SparkSession.read.format(),")
+            sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret, src_config)
+            sftp_OL_df.show(5, False)
+            sftp_OL_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # MONGODB Source
-        if src == 'CD':
+        elif src == 'CD':
             print("\nReading data from MONGODB using SparkSession.read.format(),")
             mongodb_CD_df = ut.mongodb_CD(spark, src_config["mongodb_config"]["database"], src_config["mongodb_config"]["collection"])
             mongodb_CD_df.show()
