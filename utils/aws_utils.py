@@ -43,7 +43,7 @@ def mysql_TD(spark, app_secret, src_config):
     return txnDF
 
 #SFTP Source
-def sftp_OL(spark, app_secret, file_path):
+def sftp_OL(spark, current_dir, app_secret, file_path):
     ol_txn_df = spark.read \
         .format("com.springml.spark.sftp") \
         .option("host", app_secret["sftp_conf"]["hostname"]) \
