@@ -1,22 +1,29 @@
-s3_conf:
-  s3_bucket: spark-s3-bucket-01
+source_list:
+  - TD
+  - OL
+  - CD
+  - CP
 
-sftp_conf:
+TD:
+  mysql_conf:
+    dbtable: testdb.TRANSACTIONSYNC
+    partition_column: App_Transaction_Id
+    query: (select * from testdb.TRANSACTIONSYNC) as t
+
+OL:
+  sftp_conf:
     filetype: csv
     delimiter: |
     directory: /home/ubuntu/data
 
-mysql_conf:
-  dbtable: testdb.TRANSACTIONSYNC
-  partition_column: App_Transaction_Id
-  query : (select * from testdb.TRANSACTIONSYNC where Internal_Member_Id = 'PC7135361') as t
-  query_list :
-    - (select * from testdb.TRANSACTIONSYNC where Location_External_Reference = 'WEB') as t
-    - (select * from testdb.TRANSACTIONSYNC where Location_External_Reference = 'MOBILE') as t
+CD:
+  mongodb_config:
+    database: school
+    collection: students
 
-mongodb_config:
-  database: school
-  collection: students
+s3_conf:
+  s3_bucket: spark-s3-bucket-01
+  staging_location: staging
 
 redshift_conf:
   filetype: csv
