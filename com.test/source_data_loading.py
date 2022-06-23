@@ -41,7 +41,8 @@ if __name__ == '__main__':
         #    mysql_TD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # SFTP Source
-        elif src == 'OL':
+        #elif src == 'OL':
+        if src == 'OL':
             print("\nReading data from SFTP using SparkSession.read.format(),")
             sftp_OL_df = ut.sftp_OL(spark, current_dir, app_secret, src_config)
             sftp_OL_df.show(5, False)
