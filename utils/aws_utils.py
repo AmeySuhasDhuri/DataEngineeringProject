@@ -84,7 +84,7 @@ def s3_bucket_CP(spark, path):
         .read \
         .option("header", "true") \
         .option("delimiter", "|") \
-        .parquet(path) \
+        .csv(path) \
         .withColumn('insert_date', current_date())
 
     return campaigns_df
