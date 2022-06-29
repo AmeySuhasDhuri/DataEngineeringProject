@@ -40,7 +40,7 @@ if __name__ == '__main__':
     txn_df.show(5, False)
 
     #Create a temporary table
-    txn_Df.createOrReplaceTempView("CP")
+    txn_df.createOrReplaceTempView("CP")
 
     spark.sql("""
             SELECT
