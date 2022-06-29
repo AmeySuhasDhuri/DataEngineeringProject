@@ -4,6 +4,7 @@ import yaml
 import os.path
 import utils.aws_utils as ut
 from pyspark.sql.functions import *
+import spark as spark
 
 if __name__ == '__main__':
 
