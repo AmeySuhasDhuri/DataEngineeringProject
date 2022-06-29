@@ -1,3 +1,4 @@
+import spark as spark
 from pyspark.sql import SparkSession
 import yaml
 import os.path
