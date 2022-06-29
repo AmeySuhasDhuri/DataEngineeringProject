@@ -68,6 +68,14 @@ if __name__ == '__main__':
                                           src_config["mongodb_config"]["database"],
                                           src_config["mongodb_config"]["collection"])
             mongodb_CD_df.show()
+
+            mongodb_CD_df = mongodb_CD_df.withColumn("Street", col("address.street")) \
+                .withColumn("City", col("address.city")) \
+                .withColumn("State", col("address.state")) \
+                .drop('address') \
+                .drop('_id')
+
+            mongodb_CD_df.show(5)
             mongodb_CD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
         # S3 Source
