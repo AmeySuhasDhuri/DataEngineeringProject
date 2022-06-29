@@ -61,7 +61,7 @@ if __name__ == '__main__':
             mongodb_SD_df.show()
             mongodb_SD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
-        # MONGODB Student Source
+        # MONGODB Customer Source
         elif src == 'CD':
             print("\nReading customer data from MONGODB using SparkSession.read.format(),")
             mongodb_CD_df = ut.mongodb_CD(spark,
