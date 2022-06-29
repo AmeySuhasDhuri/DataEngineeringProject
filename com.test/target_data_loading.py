@@ -52,5 +52,5 @@ if __name__ == '__main__':
             FROM
         CP JOIN ADDR ON CP.REGIS_CNSM_ID = ADDR.consumer_id
       ) CP
-            """)
+            """) \
     .show(5, False)
