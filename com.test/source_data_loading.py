@@ -52,9 +52,18 @@ if __name__ == '__main__':
             sftp_OL_df.show(5, False)
             sftp_OL_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
 
-        # MONGODB Source
+        # MONGODB Student Source
+        elif src == 'SD':
+            print("\nReading student data from MONGODB using SparkSession.read.format(),")
+            mongodb_SD_df = ut.mongodb_SD(spark,
+                                          src_config["mongodb_config"]["database"],
+                                          src_config["mongodb_config"]["collection"])
+            mongodb_SD_df.show()
+            mongodb_SD_df.write.partitionBy('insert_date').mode('overwrite').parquet(stg_path)
+
+        # MONGODB Student Source
         elif src == 'CD':
-            print("\nReading data from MONGODB using SparkSession.read.format(),")
+            print("\nReading customer data from MONGODB using SparkSession.read.format(),")
             mongodb_CD_df = ut.mongodb_CD(spark,
                                           src_config["mongodb_config"]["database"],
                                           src_config["mongodb_config"]["collection"])

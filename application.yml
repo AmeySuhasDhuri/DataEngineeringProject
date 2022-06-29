@@ -1,6 +1,7 @@
 source_list:
   - TD
   - OL
+  - SD
   - CD
   - CP
 
@@ -16,10 +17,15 @@ OL:
     delimiter: |
     directory: /home/ubuntu/data
 
-CD:
+SD:
   mongodb_config:
     database: school
     collection: students
+
+CD:
+  mongodb_config:
+    database: customer
+    collection: address
 
 CP:
   filename: /KC_Extract_1_20171009.csv
