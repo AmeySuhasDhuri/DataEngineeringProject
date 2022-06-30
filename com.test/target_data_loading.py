@@ -36,16 +36,31 @@ if __name__ == '__main__':
 
     print("\nReading data ingested into S3 bucket")
     file_path = 's3a://' + app_conf['s3_conf']['s3_bucket'] + '/' + app_conf['s3_conf']['staging_location'] + '/' + 'CP'
-    txn_df = spark.read\
+    CP_df = spark.read\
         .option("header", "true")\
         .option("delimiter", "|")\
         .parquet(file_path)
-    txn_df.show(5, False)
+    CP_df.show(5, False)
 
     #Create a temporary table
-    txn_df.createOrReplaceTempView("CP")
-    txn_df.printSchema()
+    CP_df.createOrReplaceTempView("CP")
+    CP_df.printSchema()
     #spark.sql("select * from CP").show()
 
     spark.sql(app_conf['REGIS_DIM']['loadingQuery']).show(5, False)
+
+    print("\nReading customer data ingested into MongoDB")
+    file_path = 's3a://' + app_conf['s3_conf']['s3_bucket'] + '/' + app_conf['s3_conf']['staging_location'] + '/' + 'CD'
+    txn_df = spark.read \
+        .option("header", "true") \
+        .option("delimiter", "|") \
+        .parquet(file_path)
+    txn_df.show(5, False)
+
+    # Create a temporary table
+    txn_df.createOrReplaceTempView("CD")
+    txn_df.printSchema()
+    # spark.sql("select * from CP").show()
+
+    #spark.sql(app_conf['REGIS_DIM']['loadingQuery']).show(5, False)
 
