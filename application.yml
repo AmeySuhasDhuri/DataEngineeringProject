@@ -58,7 +58,7 @@ REGIS_DIM_1:
         insert_date = current_date
       ) CP
 
-REGIS_DIM_:
+REGIS_DIM:
   tableName: DATAMART.REGIS_DIM
   source_data:
     - CP
