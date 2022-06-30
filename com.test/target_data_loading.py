@@ -57,8 +57,6 @@ if __name__ == '__main__':
                         REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, insert_date
                 FROM
                     CP
-                WHERE
-                    insert_date = current_date
           ) CP
                 """) \
         .show()
