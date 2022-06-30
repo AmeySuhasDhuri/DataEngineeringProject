@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     spark.sql("""
                 SELECT
-                    REGIS_CNSM_ID AS CNSM_ID,REGIS_CTY_CODE AS CTY_CODE,
+                    MONOTONICALLY_INCREASING_ID() AS REGIS_KEY, REGIS_CNSM_ID AS CNSM_ID,REGIS_CTY_CODE AS CTY_CODE,
                     REGIS_ID, REGIS_DATE, REGIS_LTY_ID AS LTY_ID, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, insert_date
                 FROM
                     (SELECT
@@ -58,7 +58,7 @@ if __name__ == '__main__':
                 FROM
                     CP
                 WHERE
-                    insert_date = CURRENT_DATE  
+                    insert_date = current_date()  
           ) CP
                 """) \
-        .show(5, False)
+        .show()
