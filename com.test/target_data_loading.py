@@ -50,11 +50,11 @@ if __name__ == '__main__':
     spark.sql("""
                 SELECT
                     MONOTONICALLY_INCREASING_ID() AS REGIS_KEY, REGIS_CNSM_ID AS CNSM_ID,REGIS_CTY_CODE AS CTY_CODE,
-                    REGIS_ID, REGIS_DATE, REGIS_LTY_ID AS LTY_ID, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, Street, City, State, insert_date
+                    REGIS_ID, REGIS_DATE, REGIS_LTY_ID AS LTY_ID, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, insert_date
                 FROM
                     (SELECT
                         DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
-                        REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, ADDR.street as Street, ADDR.City as City, ADDR.state as State, CP.insert_date as insert_date
+                        REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, CP.insert_date as INS_DATE
                 FROM
                     CP
                 WHERE
