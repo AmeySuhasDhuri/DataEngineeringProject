@@ -40,11 +40,10 @@ redshift_conf:
   dbtable: PUBLIC.TXN_FCT
   query: SELECT txn_id, create_time, amount, cust_id from PUBLIC.TXN_FCT
 
-REGIS_DIM:
+REGIS_DIM_1:
   tableName: DATAMART.REGIS_DIM
   source_data:
     - CP
-    - ADDR
   loadingQuery: >
     SELECT
       MONOTONICALLY_INCREASING_ID() AS REGIS_KEY, REGIS_CNSM_ID AS CNSM_ID,REGIS_CTY_CODE AS CTY_CODE,
@@ -57,6 +56,23 @@ REGIS_DIM:
         CP 
       WHERE
         insert_date = current_date
+      ) CP
+
+REGIS_DIM_:
+  tableName: DATAMART.REGIS_DIM
+  source_data:
+    - CP
+    - CD
+  loadingQuery: >
+    SELECT
+      MONOTONICALLY_INCREASING_ID() AS REGIS_KEY, REGIS_CNSM_ID AS CNSM_ID,REGIS_CTY_CODE AS CTY_CODE,
+      REGIS_ID, REGIS_DATE, REGIS_LTY_ID AS LTY_ID, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, Street, City, State, insert_date
+    FROM
+      (SELECT
+        DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
+        REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, CD.Street as Street, CD.City as City, CD.State as State, CP.insert_date as insert_date
+      FROM
+        CP JOIN CD ON CP.REGIS_CNSM_ID = CD.consumer_id
       ) CP
 
 spark_sql_demo:

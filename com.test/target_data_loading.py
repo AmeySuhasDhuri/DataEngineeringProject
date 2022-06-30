@@ -47,20 +47,20 @@ if __name__ == '__main__':
     CP_df.printSchema()
     #spark.sql("select * from CP").show()
 
-    spark.sql(app_conf['REGIS_DIM']['loadingQuery']).show(5, False)
+    spark.sql(app_conf['REGIS_DIM_1']['loadingQuery']).show(5, False)
 
     print("\nReading customer data ingested into MongoDB")
     file_path = 's3a://' + app_conf['s3_conf']['s3_bucket'] + '/' + app_conf['s3_conf']['staging_location'] + '/' + 'CD'
-    txn_df = spark.read \
+    CD_df = spark.read \
         .option("header", "true") \
         .option("delimiter", "|") \
         .parquet(file_path)
-    txn_df.show(5, False)
+    CD_df.show(5, False)
 
     # Create a temporary table
-    txn_df.createOrReplaceTempView("CD")
-    txn_df.printSchema()
+    CD_df.createOrReplaceTempView("CD")
+    CD_df.printSchema()
     # spark.sql("select * from CP").show()
 
-    #spark.sql(app_conf['REGIS_DIM']['loadingQuery']).show(5, False)
+    spark.sql(app_conf['REGIS_DIM']['loadingQuery']).show(5, False)
 
