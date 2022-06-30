@@ -58,7 +58,7 @@ if __name__ == '__main__':
                 FROM
                     CP
                 WHERE
-                    insert_date = current_date  
+                    insert_date = CURRENT_DATE  
           ) CP
                 """) \
         .show(5, False)
