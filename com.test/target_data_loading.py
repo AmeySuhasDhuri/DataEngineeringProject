@@ -54,7 +54,7 @@ if __name__ == '__main__':
                 FROM
                     (SELECT
                         DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
-                        REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, CP.insert_date as INS_DATE
+                        REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, insert_date
                 FROM
                     CP
                 WHERE
