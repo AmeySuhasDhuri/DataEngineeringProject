@@ -36,10 +36,29 @@ if __name__ == '__main__':
 
     print("\nReading data ingested into S3 bucket")
     file_path = 's3a://' + app_conf['s3_conf']['s3_bucket'] + '/' + app_conf['s3_conf']['staging_location'] + '/' + 'CP'
-    txn_df = spark.read.parquet(file_path)
+    txn_df = spark.read\
+        .option("header", "true")\
+        .option("delimiter", "|")\
+        .parquet(file_path)
     txn_df.show(5, False)
 
     #Create a temporary table
     txn_df.createOrReplaceTempView("CP")
     txn_df.printSchema()
-    spark.sql("select * from CP").show()
+    #spark.sql("select * from CP").show()
+
+    spark.sql("""
+                SELECT
+                    MONOTONICALLY_INCREASING_ID() AS REGIS_KEY, REGIS_CNSM_ID AS CNSM_ID,REGIS_CTY_CODE AS CTY_CODE,
+                    REGIS_ID, REGIS_DATE, REGIS_LTY_ID AS LTY_ID, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, Street, City, State, INS_DT
+                FROM
+                    (SELECT
+                        DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
+                        REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, ADDR.street as Street, ADDR.City as City, ADDR.state as State, CP.INS_DT as INS_DT
+                FROM
+                    CP
+                WHERE
+                    insert_date = current_date  
+          ) CP
+                """) \
+        .show(5, False)
