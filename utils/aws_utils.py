@@ -22,6 +22,7 @@ def get_mysql_jdbc_url(mysql_config: dict):
 
 #MYSQL Source
 def mysql_TD(spark, app_secret, table_name, partition_col):
+    print("\nReading data from MYSQL DB,")
     jdbc_params = {"url": ut.get_mysql_jdbc_url(app_secret),
                    "lowerBound": "1",
                    "upperBound": "100",
@@ -100,3 +101,20 @@ def s3_bucket_CP(spark, path):
         .withColumn('insert_date', current_date())
 
     return campaigns_df
+
+def read_parquet_from_s3(spark,file_path):
+    return spark.read \
+        .option("header", "true") \
+        .option("delimiter", "|") \
+        .parquet(file_path)
+
+
+def write_data_to_Redshift(txn_df,jdbc_url,s3_path,redshift_table_name):
+    txn_df.coalesce(1).write \
+            .format("io.github.spark_redshift_community.spark.redshift") \
+            .option("url", jdbc_url) \
+            .option("tempdir", s3_path) \
+            .option("forward_spark_s3_credentials", "true") \
+            .option("dbtable", redshift_table_name) \
+            .mode("overwrite") \
+            .save()

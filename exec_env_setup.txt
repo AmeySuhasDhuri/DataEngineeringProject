@@ -41,3 +41,6 @@ cp ../dataframe-examples-py/.secrets .
 # Copy 2 files (private key and .secrets) from local to EMR cluster's master node,
 scp -i test.pem xyz.pem hadoop@<cluster_dns_name>:/home/hadoop/dataframe-examples-py/
 scp -i test.pem .secrets hadoop@<cluster_dns_name>:/home/hadoop/dataframe-examples-py/
+
+#Before writing data in AWS Redshift, create schema in AWS redshift query editor
+query - create schema datamart
